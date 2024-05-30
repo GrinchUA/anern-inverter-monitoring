@@ -24,7 +24,7 @@ scrape_configs:
     scrape_interval: 60s
     static_configs:
       - targets:
-          - '192.168.25.175:9006'
+          - '192.168.25.125:9006'
   - job_name: prometheus
     static_configs:
       - targets:
@@ -39,4 +39,4 @@ scrape_configs:
 
     scheme: http
     static_configs:
-      - targets: ['192.168.25.175:8123']
+      - targets: ['192.168.25.125:8123']

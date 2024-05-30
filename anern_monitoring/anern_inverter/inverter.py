@@ -1,9 +1,12 @@
 import ctypes
 import re
 import time
+import serial
+import logging
+
 from threading import Lock
 
-import serial
+log = logging.getLogger(__name__)
 
 
 class BasicCommand:
@@ -127,18 +130,21 @@ class Inverter:
 
     def _parse_response(self, response: bytes, command_cls: BasicCommand) -> dict:
         if not response.startswith(b'('):
-            raise RuntimeError('Got bad response from inverter')
+            log.error('Got bad response from inverter')
+            return {}
         if not response.endswith(b'\r'):
-            raise RuntimeError('Got bad response from inverter')
-        print(response)
+            log.error('Got bad response from inverter')
+            return {}
+
         stripped_response = response[1:-3].decode('utf-8')
         response_fmt = command_cls.response_fmt
         response_typing = command_cls.response_typing
         response_crc = BasicCommand.compute_crc(stripped_response)
-        print(stripped_response)
+
         parsed_response = response_fmt.match(stripped_response)
         if parsed_response is None:
-            raise RuntimeError('Inverter response does not match expected format')
+            log.error('Inverter response does not match expected format')
+            return {}
 
         return {
             key: response_typing[key](value)
