@@ -16,6 +16,10 @@ services:
       interval: 30s
       timeout: 10s
       retries: 2
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
 
   prometheus:
     image: prom/prometheus:latest
@@ -32,6 +36,10 @@ services:
     restart: always
     ports:
       - "9090:9090"
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
 
   grafana:
     image: grafana/grafana

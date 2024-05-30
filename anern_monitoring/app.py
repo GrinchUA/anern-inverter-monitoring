@@ -18,7 +18,8 @@ def get_inverter() -> Inverter:
 
 
 async def get_metrics(request):
-    inverter = get_inverter()
+    # inverter = get_inverter()
+    inverter = Inverter('/dev/ttyUSB0')
     data = inverter.get_qpigs()
     return web.Response(
         text='\n'.join([f'{key} {value}' for key, value in data.items()]),

@@ -130,12 +130,12 @@ class Inverter:
             raise RuntimeError('Got bad response from inverter')
         if not response.endswith(b'\r'):
             raise RuntimeError('Got bad response from inverter')
-
+        print(response)
         stripped_response = response[1:-3].decode('utf-8')
         response_fmt = command_cls.response_fmt
         response_typing = command_cls.response_typing
         response_crc = BasicCommand.compute_crc(stripped_response)
-
+        print(stripped_response)
         parsed_response = response_fmt.match(stripped_response)
         if parsed_response is None:
             raise RuntimeError('Inverter response does not match expected format')
